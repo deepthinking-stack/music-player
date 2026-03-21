@@ -138,6 +138,7 @@ const timeTotalEl = document.getElementById("time-total");
 const trackTitleEl = document.getElementById("track-title");
 const trackArtistEl = document.getElementById("track-artist");
 const playbackStatusEl = document.getElementById("playback-status");
+const prefersInstantLyricScroll = window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches;
 const bgVideoEl = document.getElementById("bg-video");
 const particlesEl = document.getElementById("particles");
 const loopEl = document.getElementById("loop");
@@ -741,7 +742,10 @@ function updateLyrics() {
     });
 
     if (activeIndex >= 0 && lyricEls[activeIndex]) {
-      lyricEls[activeIndex].scrollIntoView({ behavior: "smooth", block: "center" });
+      lyricEls[activeIndex].scrollIntoView({
+        behavior: prefersInstantLyricScroll ? "auto" : "smooth",
+        block: "center"
+      });
     }
   }
 

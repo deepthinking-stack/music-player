@@ -715,8 +715,14 @@ body.type-brisk .lyric-line {
 }
 
 @media (max-width: 900px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
   .app {
     min-height: 100vh;
+    min-height: 100dvh;
     height: auto;
     padding: 20px 16px;
   }
@@ -724,6 +730,7 @@ body.type-brisk .lyric-line {
   .layout {
     grid-template-columns: 1fr;
     gap: 16px;
+    min-height: auto;
   }
 
   .sidebar {
@@ -735,6 +742,7 @@ body.type-brisk .lyric-line {
 
   .lyrics {
     order: 1;
+    min-height: 56vh;
   }
 
   .topbar {
@@ -896,6 +904,32 @@ body.type-brisk .lyric-line {
     gap: 10px;
     padding-left: 2px;
     padding-right: 4px;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .bg-video,
+  .scene-layer,
+  .bg-overlay,
+  .orb {
+    animation: none;
+  }
+
+  .particles,
+  .orbs {
+    opacity: 0.18;
+  }
+
+  .card,
+  .lyrics {
+    backdrop-filter: none;
+  }
+
+  .btn,
+  .chip,
+  .switch,
+  .track {
+    touch-action: manipulation;
   }
 }
 
