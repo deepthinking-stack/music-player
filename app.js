@@ -164,7 +164,6 @@ let currentThemeRgb = {
 let switchTimer = null;
 let stageStateTimer = null;
 let autoNextTimer = null;
-let sidebarPeekTimer = null;
 let sleepTimerId = null;
 let sleepTickerId = null;
 let sleepDeadline = 0;
@@ -534,16 +533,6 @@ function drawWaveform() {
   }
 }
 
-function showSidebarPeekTemporarily() {
-  if (!document.body.classList.contains("is-playing")) return;
-
-  document.body.classList.add("sidebar-peek");
-  if (sidebarPeekTimer) window.clearTimeout(sidebarPeekTimer);
-  sidebarPeekTimer = window.setTimeout(() => {
-    document.body.classList.remove("sidebar-peek");
-  }, 1100);
-}
-
 function createParticles() {
   const count = Math.max(20, Math.min(56, Math.floor(window.innerWidth / 28)));
   particles = Array.from({ length: count }, () => ({
@@ -790,7 +779,6 @@ function stopRaf() {
 function setEmptyState() {
   currentTrackIndex = -1;
   if (autoNextTimer) window.clearTimeout(autoNextTimer);
-  if (sidebarPeekTimer) window.clearTimeout(sidebarPeekTimer);
   audioEl.pause();
   stopRaf();
   audioEl.removeAttribute("src");
@@ -807,7 +795,7 @@ function setEmptyState() {
   applyTrackBackdrop(null);
   hideStageState();
   setPlaybackStatus("idle", "");
-  document.body.classList.remove("is-playing", "sidebar-peek");
+  document.body.classList.remove("is-playing");
 }
 
 function setTrack(index, keepTime = false) {
@@ -943,7 +931,7 @@ audioEl.addEventListener("play", () => {
 
 audioEl.addEventListener("pause", () => {
   updatePlayButton(false);
-  document.body.classList.remove("is-playing", "sidebar-peek");
+  document.body.classList.remove("is-playing");
   stopRaf();
 });
 
@@ -1025,10 +1013,6 @@ window.addEventListener("pointermove", (event) => {
     const yRatio = event.clientY / window.innerHeight - 0.5;
     document.documentElement.style.setProperty("--parallax-x", `${(xRatio * 20).toFixed(2)}px`);
     document.documentElement.style.setProperty("--parallax-y", `${(yRatio * 16).toFixed(2)}px`);
-  }
-
-  if (document.body.classList.contains("is-playing") && event.clientX < 150) {
-    showSidebarPeekTemporarily();
   }
 });
 
